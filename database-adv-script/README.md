@@ -1,3 +1,31 @@
+## Aggregation and Window Functions Task
+
+### Objective
+Use SQL aggregation and window functions to analyze data.
+
+### Instructions
+
+1. **Write a query to find the total number of bookings made by each user, using the COUNT function and GROUP BY clause.**
+2. **Use a window function (ROW_NUMBER, RANK) to rank properties based on the total number of bookings they have received.**
+
+### Example Solutions (see `aggregations_and_window_functions.sql`)
+
+```sql
+-- 1. Total number of bookings made by each user
+SELECT user_id, COUNT(*) AS total_bookings
+FROM bookings
+GROUP BY user_id;
+
+-- 2. Rank properties based on total bookings
+SELECT property_id, total_bookings,
+	   ROW_NUMBER() OVER (ORDER BY total_bookings DESC) AS row_num,
+	   RANK() OVER (ORDER BY total_bookings DESC) AS rank_num
+FROM (
+	SELECT property_id, COUNT(*) AS total_bookings
+	FROM bookings
+	GROUP BY property_id
+) AS property_bookings;
+```
 ## Subqueries Task
 
 ### Objective
